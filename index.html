@@ -1,0 +1,2426 @@
+<!-- עודכן לאחרונה: 19.7.2026, 21:49 -->
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Miriam Omisi | קליניקת קוסמטיקה יוקרתית</title>
+
+<!-- ========================================================= -->
+<!-- הגדרות PWA - מאפשרות התקנת האתר כאפליקציה מהדפדפן -->
+<!-- ========================================================= -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#B8934F">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Miriam Omisi">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
+
+<!-- ========================================================= -->
+<!-- ייבוא פונטים: פונט סריפי אלגנטי ללוגו + פונט נקי לטקסט -->
+<!-- ========================================================= -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Assistant:wght@300;400;600;700&family=Allura&family=Tangerine:wght@400;700&family=Rubik:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  /* =========================================================
+     הגדרות בסיס כלליות
+  ========================================================= */
+  :root{
+    --gold: #B8934F;              /* ✏️ זהב - טיפה כהה יותר מהגרסה הקודמת */
+    --gold-light: #AE9152;        /* ✏️ הברקה עדינה - טיפה כהה יותר בהתאם */
+    --gold-deep: #4E3A10;         /* ✏️ צל לעומק - טיפה כהה יותר בהתאם */
+    /* ✏️ גרדיאנט זהב חלק - קשת אחת בלבד, הברקה עדינה מאוד כדי לא לפגוע בקריאות */
+    --gold-gradient: linear-gradient(135deg, #4E3A10 0%, #7A5F1F 25%, #B8934F 42%, #AE9152 50%, #B8934F 58%, #7A5F1F 75%, #4E3A10 100%);
+    --black: #F3E9D2;              /* ✏️ שמנת מחוזק - כדי שייראה שמנת גם במסכים זולים, לא לבן */
+    --black-soft: #EFE3C6;
+    --white: #ffffff;
+    /* ✏️ צבע טקסט כהה חדש - גוון חום-זהב עמוק שמשתלב עם רקע השמנת ועם הזהב, קריא ונעים לעין */
+    --text-dark: #4A3A18;
+    --text-dark-soft: #6B5A30;
+  }
+
+  /* ✏️ הדגשה נוספת לכל הכתב בזהב - זוהר עדין באותו גוון זהב, בלי לשנות את הצבע עצמו */
+  /* ✏️ זוהר עדין - רק לאלמנטים קטנים (תפריט, כיתובים), לא לכותרות */
+  .nav-menu a,
+  .hero-scroll-hint,
+  .highlight-item .num,
+  .gallery-caption span,
+  footer span{
+    filter: drop-shadow(0 0 6px rgba(169,120,30,0.55));
+  }
+
+  /* מחלקת עזר: טקסט בגרדיאנט זהב מתכתי (לכותרות ולוגו) */
+  .gold-metal{
+    background: var(--gold-gradient);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: var(--gold);
+    /* ✏️ בלי טשטוש (drop-shadow) - הזהב נשאר חד וברור, לא נראה כמו "פס מרוח" מתחת לכותרת */
+  }
+
+  *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+  }
+
+  html{
+    scroll-behavior: smooth; /* גלילה חלקה בין אזורי הדף */
+  }
+
+  body{
+    background-color: var(--black);
+    color: var(--text-dark);
+    font-family: 'Assistant', sans-serif;
+    font-weight: 600; /* ✏️ טקסט מודגש יותר בכל האתר */
+    overflow-x: hidden;
+  }
+
+  /* =========================================================
+     תפריט עליון (Header) קבוע בראש הדף
+  ========================================================= */
+  header{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1060; /* ✏️ חייב להיות גבוה מ-z-index של .nav-menu (1050), אחרת הפאנל הנפתח מכסה את כפתור ה-X */
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    /* ✏️ שליטה על צד ההמבורגר: flex-start = ימין | flex-end = שמאל (הפוך מהרגיל כי הדף בעברית/RTL) */
+    padding: 18px 6%;
+    background: transparent; /* ✏️ שקוף לגמרי - בלי "פס" מעל שאר הדף */
+    pointer-events: none; /* ✏️ כך שאפשר "לגעת" דרך השטח השקוף; רק לכפתורים בפנים יש pointer-events חזרה */
+  }
+  header > *{
+    pointer-events: auto;
+  }
+
+  /* ✏️ תפריט אופקי למחשב - מוסתר לגמרי במובייל, מוצג רק דרך המדיה-קוורי של הדסקטופ למטה */
+  .desktop-nav{
+    display:none;
+  }
+  .desktop-nav a{
+    background: transparent;
+    border: 1.5px solid var(--gold);
+    color: var(--gold-deep);
+    text-decoration:none;
+    font-family:'Assistant', sans-serif;
+    font-weight: 700;
+    font-size: 13.5px;
+    padding: 9px 16px;
+    border-radius: 10px;
+    cursor:pointer;
+    white-space:nowrap;
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+  .desktop-nav a:hover{
+    background: var(--gold);
+    color: #000;
+  }
+
+  /* --- כפתור המבורגר (שלושה פסים) - ממוקם בצד ימין למעלה --- */
+  .hamburger{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:6px;
+    cursor:pointer;
+    width: 40px;
+    height: 40px;
+    z-index: 1100;
+  }
+  .hamburger span{
+    display:block;
+    width: 32px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold-deep), var(--gold-light));
+    transition: all 0.35s ease;
+  }
+  /* אנימציית X בעת פתיחת התפריט */
+  .hamburger.active span:nth-child(1){
+    transform: translateY(8px) rotate(45deg);
+  }
+  .hamburger.active span:nth-child(2){
+    opacity:0;
+  }
+  .hamburger.active span:nth-child(3){
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  /* --- תפריט נפתח (Dropdown) --- */
+  /* התפריט תופס שליש מרוחב הדף (בדסקטופ), עם רקע שמנת חם (זכוכית) כך שהתוכן מאחוריו נראה */
+  .nav-menu{
+    position: fixed;
+    top: 0;
+    right: -33.334%;
+    width: 33.334%;
+    height: 100vh;
+    background: rgba(251, 246, 234, 0.38); /* ✏️ שקוף יותר - מראה זכוכית */
+    backdrop-filter: blur(24px) saturate(160%); /* ✏️ טשטוש חזק יותר + רוויה = מראה זכוכית מחוספסת */
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    border-left: 1px solid rgba(255,255,255,0.4); /* ✏️ קו אור עדין בקצה כמו שפת זכוכית */
+    box-shadow:
+      -20px 0 60px rgba(154,116,20,0.18),
+      inset 1px 0 0 rgba(255,255,255,0.25),
+      inset -40px 0 80px -60px rgba(255,255,255,0.5); /* ✏️ הברקות פנימיות שיוצרות עומק של זכוכית */
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    padding: 70px 5% 0;
+    transition: right 0.5s cubic-bezier(.77,0,.18,1);
+    z-index: 1050;
+  }
+  .nav-menu.open{
+    right: 0;
+  }
+  /* ✏️ פס אור אלכסוני עדין שנע על פני התפריט - מדמה השתקפות אור על זכוכית */
+  .nav-menu::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.18) 48%, rgba(255,255,255,0.05) 55%, transparent 70%);
+    pointer-events:none;
+  }
+  /* עמודת הקישורים + הקו האנכי לצידה, בהשראת השרטוט */
+  .nav-menu-list{
+    position: relative;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap: 20px;
+    padding-right: 34px;
+  }
+  /* הקו האנכי הרציף לצד הכיתוב */
+  .nav-menu-list::before{
+    content:'';
+    position:absolute;
+    top:0;
+    right:0;
+    width: 1px;
+    height: 100%;
+    background: var(--gold);
+    opacity: 0.8;
+  }
+  .nav-menu a{
+    /* ✏️ זהב מתכתי אמיתי (גרדיאנט) במקום צבע זהב שטוח */
+    background: var(--gold-gradient);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: var(--gold-deep);
+    text-decoration:none;
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 700;
+    text-align: right;
+    white-space: nowrap;
+    position: relative;
+    transition: background-position 0.4s ease;
+  }
+  .nav-menu a:hover{
+    background-position: right center; /* ✏️ הבהוב הזהב זז בהובר, כמו הברקה על מתכת */
+  }
+
+
+
+  /* שכבה שקופה מאוד מעל שאר הדף כשהתפריט פתוח (רק לצורך סגירה בלחיצה מחוץ לתפריט, כמעט בלתי מורגשת) */
+  .overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.15);
+    opacity:0;
+    pointer-events:none;
+    transition: opacity 0.4s ease;
+    z-index: 1040;
+  }
+  .overlay.show{
+    opacity:1;
+    pointer-events:all;
+  }
+
+  /* מובייל: גם כאן התפריט נשאר בשליש רוחב הדף */
+  @media (max-width: 700px){
+    .nav-menu{
+      width: 33.334%;
+      right: -33.334%;
+    }
+    .nav-menu.open{
+      right: 0;
+    }
+  }
+
+  /* =========================================================
+     אזור פתיחה (Hero)
+  ========================================================= */
+  .hero{
+    position: relative; /* ✏️ נדרש כדי למקם את שכבת התמונה מאחורי הטקסט */
+    height: 100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    text-align:center;
+    padding: 11vh 20px 0;
+    background:
+      radial-gradient(ellipse at center, rgba(212,175,55,0.12) 0%, rgba(0,0,0,0) 60%),
+      var(--black);
+    overflow: hidden;
+  }
+
+  /* ✏️ תמונת הרקע בעמוד הבית - ודא שהקובץ potos.jpg נמצא באותה תיקייה כמו קובץ ה-HTML */
+  .hero::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background-image: url('potos.jpg');
+    background-size: cover;
+    background-position: center 20%;
+    opacity: 0.24; /* ✏️ שקיפות - אפשר לשנות מספר זה בין 0 ל-1 */
+    z-index: 0;
+    /* ✏️ התמונה דוהה בהדרגה למעלה ולמטה, כדי שהמעבר לסקשן הבא יהיה חלק בלי קו חד */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 62%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 62%, transparent 100%);
+    pointer-events: none;
+  }
+
+  /* ✏️ מוודא שכל תוכן ה-Hero (לוגו, כותרת, טקסט) יישאר מעל התמונה */
+  .hero > *{
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-logo{
+    font-family:'Playfair Display', serif; /* ✏️ פונט קלאסי ונקי - זה מה שבאמת נראה יוקרתי במותגי יוקרה, לא כתב יד עמוס */
+    font-style: italic;
+    font-weight: 500; /* ✏️ דק */
+    font-size: clamp(60px, 11vw, 120px);
+    letter-spacing: 1px;
+    line-height: 1.15;
+    filter: drop-shadow(0 0 30px rgba(201,162,39,0.45));
+    margin-bottom: 18px;
+  }
+
+  /* קו עדין דקורטיבי מתחת ללוגו */
+  .hero-divider{
+    width: 90px;
+    height: 2px;
+    background: var(--gold);
+    margin: 10px 0 22px;
+  }
+
+  /* ✏️ כותרת המשנה בעמוד הפתיחה - שנה כאן את המשפט שמופיע מתחת ללוגו */
+  .hero-subtitle{
+    font-weight: 800; /* ✏️ הודגש יותר (היה 600) */
+    color: var(--gold-deep); /* ✏️ צבע כהה וחזק יותר, כדי שיראו אותו ברור יותר */
+    letter-spacing: 2px;
+  }
+
+  /* ✏️ המשפט הנוסף מתחת לשורת השירותים */
+  .hero-tagline{
+    margin-top: 38px;
+    max-width: 420px;
+    font-family: 'Rubik', sans-serif; /* ✏️ פונט מעוגל ורך, שונה מהגופן הרגיל של האתר */
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-dark-soft);
+    line-height: 1.6;
+  }
+
+  .hero-cta-wrap{
+    position: absolute;
+    bottom: 18%; /* ✏️ הועלה טיפה כדי לא להיבלע עם "גללי למטה" */
+    right: 0;
+    left: 0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap: 10px;
+    z-index: 1;
+  }
+
+  .hero-cta-btn{
+    border: none;
+    cursor: pointer;
+    font-family: 'Assistant', sans-serif;
+    font-size: 18px;
+    padding: 17px 24px;
+    width: min(58vw, 230px); /* ✏️ קוצר משמעותית */
+    text-align: center;
+    justify-content: center;
+  }
+
+  .hero-cta-caption{
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dark-soft);
+    letter-spacing: 0.5px;
+  }
+
+  /* ✏️ שורת שני הכפתורים החלולים - יצירת קשר ומחירון */
+  .hero-secondary-row{
+    display:grid;
+    grid-template-columns: 1fr 1fr; /* ✏️ שני טורים שווים בהגדרה - תמיד אותו רוחב, לא תלוי באורך הטקסט */
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  /* ✏️ כפתור ריבועי חלול (רק מסגרת, בלי מילוי) ליצירת קשר / מחירון - הצבע נשלט אוטומטית ע"י --gold כמו כל שאר האתר */
+  .hero-contact-btn{
+    min-width: 0; /* ✏️ מונע מהטקסט "לשבור" את השוויון בין הטורים */
+    background: transparent;
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Assistant', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 12px 14px;
+    border-radius: 10px; /* ✏️ ריבוע עם פינות מעוגלות קלות - לא עיגול מלא כמו כפתור קביעת התור */
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+    text-align: center;
+  }
+  .hero-contact-btn:hover{
+    background: var(--gold);
+    color: #000;
+  }
+
+  /* ✏️ קישור עדין ל"ביטול תור" - במכוון קטן ולא בולט, כדי לא להתחרות עם כפתורי הפעולה העיקריים */
+  .hero-cancel-link{
+    margin-top: 14px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-dark-soft);
+    text-decoration: underline;
+  }
+  .hero-cancel-link:hover{
+    color: var(--gold-deep);
+  }
+
+  .hero-scroll-hint{
+    position:absolute;
+    /* ✏️ המרחק מהתחתית - מספר גדול יותר = מרים את הטקסט יותר גבוה */
+    bottom: 55px;
+    font-weight: 700;
+    background: var(--gold-gradient);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: var(--gold);
+    font-size: 13px;
+    letter-spacing: 3px;
+    opacity: 0.85;
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce{
+    0%,100%{ transform: translateY(0); }
+    50%{ transform: translateY(-10px); }
+  }
+
+  /* =========================================================
+     כותרות משותפות לכל הסקשנים
+  ========================================================= */
+  .section{
+    padding: 80px 8%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-title{
+    font-family:'Rubik', sans-serif; /* ✏️ פונט מעוגל במקום הסריפי המרובע, הצבע (gold-metal) לא השתנה */
+    font-size: clamp(26px, 4vw, 34px);
+    text-align:center;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 34px; /* ✏️ מרחק מהתוכן שמתחת */
+    /* ✏️ צל דק וחד (בלי טשטוש) לתחושת עומק, בלי להיראות מרוח */
+    filter: drop-shadow(0 1px 0 rgba(78,51,8,0.4));
+  }
+
+  .section-divider{
+    display:none; /* ✏️ הוסתר - זה היה הקו הדק מתחת לכותרות. אם תרצי להחזיר, פשוט תמחקי את השורה הזו */
+    width: 70px;
+    height: 2px;
+    background: var(--gold);
+    margin: 0 auto 60px;
+    opacity: 0.7;
+  }
+
+  /* =========================================================
+     אזור "אודות"
+  ========================================================= */
+  #about{
+    text-align:center;
+  }
+
+  /* ✏️ פסקת "אודות" - כתבי כאן על הסיפור האישי / הרקע המקצועי שלך */
+  .about-text{
+    font-size: 19px;
+    line-height: 1.9;
+    font-weight: 600;
+    color: var(--text-dark);
+    max-width: 780px;
+    margin: 0 auto 50px;
+  }
+
+  /* שורת יתרונות / מומחיות קצרה מתחת לטקסט האודות */
+  .about-highlights{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap: 40px;
+    margin-top: 40px;
+  }
+  .highlight-item{
+    min-width: 140px;
+  }
+  .highlight-item .num{
+    font-family:'Playfair Display', serif;
+    font-size: 34px;
+    background: var(--gold-gradient);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  /* ✏️ תוויות מתחת למספרים בסקשן "אודות" - שנה לפי הצורך */
+  .highlight-item .label{
+    font-size: 14px;
+    color: var(--text-dark-soft);
+    letter-spacing: 1px;
+    margin-top: 6px;
+  }
+
+  /* =========================================================
+     אזור "עבודות לדוגמה" - גלריית קוביות
+  ========================================================= */
+  /* ✏️ רמז קטן מעל הגלריה - "גללי ימינה/שמאלה" */
+  .gallery-hint{
+    text-align:center;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-dark-soft);
+    letter-spacing: 0.5px;
+    margin-top: 14px;
+  }
+
+  /* ✏️ חלונית גלריה יחידה - גוללים בין התמונות בהחלקה אופקית */
+  .gallery-carousel{
+    display:flex;
+    overflow-x:auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* מסתיר את פס הגלילה - Firefox */
+  }
+  .gallery-carousel::-webkit-scrollbar{
+    display:none; /* מסתיר את פס הגלילה - Chrome/Safari */
+  }
+
+  .gallery-slide{
+    position:relative;
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+  }
+
+  /* ✏️ עטיפת התמונה בלבד מקבלת את הפינות המעוגלות והמסגרת - בלי שום פס כהה מתחתיה */
+  .gallery-slide-image{
+    aspect-ratio: 1 / 1;
+    overflow:hidden;
+    border: 1px solid rgba(212,175,55,0.25);
+    border-radius: 18px;
+    background: rgba(184,134,11,0.08); /* ✏️ רקע עדין שנראה כל עוד התמונה עוד לא נטענה - בקליטה חלשה זה מונע "ריבוע לבן ריק" */
+  }
+  .gallery-slide img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    filter: grayscale(10%) brightness(0.95);
+  }
+
+  /* ✏️ הכיתוב עכשיו מתחת לתמונה עצמה, בטקסט רגיל - לא פס כהה מעל התמונה */
+  .gallery-caption{
+    text-align:center;
+    padding-top: 12px;
+  }
+  .gallery-caption span{
+    background: var(--gold-gradient);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: var(--gold);
+    font-weight:700;
+    font-size: 16px;
+    letter-spacing:1px;
+  }
+
+  /* ✏️ ה"גלגלת" - כמו גלגל מספרים בכספת/מנעול אופניים: רצועה אופקית שגוללים,
+     עם מחוג קבוע במרכז שמצביע על המספר הנבחר */
+  .gallery-wheel-wrap{
+    position: relative;
+    max-width: 280px;
+    margin: 22px auto 0;
+  }
+  .gallery-wheel-pointer{
+    position:absolute;
+    top: -6px;
+    right: 50%;
+    transform: translateX(50%);
+    color: var(--gold);
+    font-size: 13px;
+    line-height:1;
+    z-index: 2;
+  }
+  .gallery-wheel-track{
+    display:flex;
+    overflow-x:auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    border-top: 2px solid var(--gold);
+    border-bottom: 2px solid var(--gold);
+    padding: 12px 0;
+    scrollbar-width: none;
+  }
+  .gallery-wheel-track::-webkit-scrollbar{
+    display:none;
+  }
+  .gallery-wheel-spacer{
+    flex: 0 0 calc(50% - 20px); /* מאפשר לספרה הראשונה/אחרונה "להגיע" למרכז */
+  }
+  .gallery-wheel-tick{
+    position:relative;
+    flex: 0 0 40px;
+    scroll-snap-align: center;
+    scroll-snap-stop: always; /* ✏️ מכריח עצירה בכל מספר, גם בגלילה מהירה - לא מדלג */
+    text-align:center;
+    font-family:'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text-dark-soft);
+    opacity: 0.5;
+    transition: color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+    cursor:pointer;
+    user-select:none;
+  }
+  /* ✏️ קו מפריד קטן בין כל מספר לשכן שלו */
+  .gallery-wheel-tick::before{
+    content:'';
+    position:absolute;
+    top: 50%;
+    right: 100%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 14px;
+    background: rgba(184,134,11,0.35);
+  }
+  .gallery-wheel-tick:first-of-type::before{
+    display:none;
+  }
+  .gallery-wheel-tick.active{
+    color: var(--gold-deep);
+    opacity: 1;
+    transform: scale(1.35);
+  }
+
+  /* =========================================================
+     אזור "יצירת קשר"
+  ========================================================= */
+  #contact{
+    text-align:center;
+  }
+
+  /* ✏️ פסקת פתיחה בסקשן יצירת קשר - שנה את הטקסט שמזמין לפנות */
+  .contact-text{
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 45px;
+    line-height: 1.8;
+  }
+
+  .whatsapp-btn{
+    display:inline-flex;
+    align-items:center;
+    gap: 12px;
+    background: var(--gold);
+    color: #000000;
+    text-decoration:none;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 13px 34px;
+    border-radius: 50px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 0 25px rgba(212,175,55,0.35);
+    transition: all 0.35s ease;
+  }
+  .whatsapp-btn:hover{
+    background: var(--gold-light);
+    box-shadow: 0 0 40px rgba(212,175,55,0.6);
+    transform: translateY(-3px);
+  }
+  .whatsapp-btn svg{
+    width: 19px;
+    height: 19px;
+  }
+
+  /* ✏️ שורת אייקונים עגולים ליצירת קשר (וויז/מייל/טלפון/וואטסאפ) */
+  .contact-icons{
+    display:flex;
+    flex-wrap:nowrap; /* ✏️ תמיד בשורה אחת, לא יורדים שורה */
+    justify-content:center;
+    gap: 12px; /* ✏️ המרחק בין העיגולים - מספר קטן יותר = צפוף יותר */
+    margin-top: 20px; /* ✏️ המרחק מהטקסט מעל - מספר קטן יותר = עולה יותר גבוה */
+  }
+  .contact-icon-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap: 8px;
+    text-decoration:none;
+    width: 66px; /* ✏️ רוחב כל פריט - קטן יותר גורם לצפיפות רבה יותר */
+  }
+  /* ✏️ העיגול עצמו - גוון הזהב ואפקט ההברקה בהובר נשלטים כאן */
+  .contact-icon-circle{
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: var(--gold); /* ✏️ צבע זהב אחיד (לא גרדיאנט) - כדי שלא יהיה "פס" אלכסוני */
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color: #1a1204; /* צבע האייקון עצמו - כהה, כדי לבלוט על הזהב */
+    box-shadow: 0 6px 22px rgba(154,116,20,0.35);
+    transition: transform 0.3s ease, background 0.3s ease;
+  }
+  .contact-icon-circle svg{
+    width: 27px;
+    height: 27px;
+  }
+  /* ✏️ אייקון הוויז (הפין) - מוגדל ומוזז טיפה, כי צורת הפין "נראית" קטנה יותר משאר האייקונים באותו גודל */
+  .contact-icon-circle svg.icon-waze{
+    width: 32px;
+    height: 32px;
+    transform: translateY(-1px);
+  }
+  .contact-icon-item:hover .contact-icon-circle{
+    transform: translateY(-4px);
+    background: var(--gold-light); /* ✏️ בהובר נהיה גוון זהב בהיר יותר, עדיין אחיד */
+  }
+  /* ✏️ הכיתוב מתחת לכל עיגול (וויז/מייל/וכו') */
+  .contact-icon-item span{
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-dark);
+  }
+
+  /* פרטי קשר נוספים מתחת לכפתור */
+  .contact-details{
+    margin-top: 50px;
+    display:flex;
+    flex-direction:column;
+    gap: 12px;
+    font-size: 15px;
+    color: var(--text-dark-soft);
+    letter-spacing: 0.5px;
+  }
+  /* ✏️ פרטי קשר נוספים (טלפון/כתובת/אינסטגרם) - עדכני כאן */
+  .contact-details a{
+    color: var(--text-dark-soft);
+    text-decoration:none;
+  }
+  .contact-details a:hover{
+    color: var(--gold);
+  }
+
+  /* =========================================================
+     אזור "קביעת תור" - יומן חכם
+  ========================================================= */
+  #booking{
+    text-align:center;
+  }
+
+  .booking-intro{
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 40px;
+    line-height: 1.8;
+  }
+
+  /* הכרטיס המרכזי של היומן - זכוכית עדינה כמו התפריט */
+  .booking-widget{
+    max-width: 460px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(184,134,11,0.28);
+    border-radius: 24px;
+    padding: 34px 26px;
+    box-shadow: 0 10px 40px rgba(154,116,20,0.15);
+    text-align: right;
+  }
+
+  .booking-step{
+    animation: bookingFadeIn 0.5s ease;
+  }
+  .booking-step + .booking-step{
+    margin-top: 30px;
+  }
+
+  @keyframes bookingFadeIn{
+    from{ opacity:0; transform: translateY(10px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  .booking-label{
+    font-family:'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--text-dark);
+    margin-bottom: 14px;
+  }
+
+  /* שדה תאריך - מעוצב לפי שפת האתר */
+  .booking-date-input{
+    width:100%;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1.5px solid rgba(184,134,11,0.45);
+    background: rgba(255,255,255,0.7);
+    color: var(--text-dark);
+    font-family:'Assistant', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    outline:none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .booking-date-input:focus{
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(184,134,11,0.15);
+  }
+  /* צביעת אייקון הלוח שנה בגוון זהוב, ככל שהדפדפן מאפשר */
+  .booking-date-input::-webkit-calendar-picker-indicator{
+    filter: sepia(1) saturate(4) hue-rotate(0deg) brightness(0.8);
+    cursor:pointer;
+  }
+
+  /* רשת שעות פנויות */
+  .slots-grid{
+    display:flex;
+    flex-wrap:wrap;
+    gap: 10px;
+  }
+  .slot-btn{
+    flex: 0 0 auto;
+    padding: 10px 18px;
+    border-radius: 30px;
+    border: 1.5px solid var(--gold);
+    background: transparent;
+    color: var(--text-dark);
+    font-family:'Assistant', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    cursor:pointer;
+    opacity:0;
+    animation: bookingFadeIn 0.4s ease forwards;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  }
+  .slot-btn:hover{
+    transform: translateY(-2px);
+  }
+  .slot-btn.selected{
+    background: var(--gold-gradient);
+    background-size: 200% auto;
+    color: #000;
+    box-shadow: 0 0 20px rgba(184,134,11,0.4);
+  }
+
+  .slots-empty, .slots-loading{
+    color: var(--text-dark-soft);
+    font-size: 15px;
+    padding: 10px 0;
+  }
+  /* אנימציית טעינה קטנה של שלוש נקודות */
+  .slots-loading::after{
+    content:'...';
+    animation: bookingDots 1.2s infinite steps(4);
+  }
+  @keyframes bookingDots{
+    0%{ content:''; }
+    25%{ content:'.'; }
+    50%{ content:'..'; }
+    75%{ content:'...'; }
+  }
+
+  /* ✏️ לוח שנה תלת-חודשי לבחירת תאריך זמין (בעמוד הלקוחה) */
+  .client-cal-nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom: 12px;
+  }
+  .client-cal-nav-btn{
+    background:none;
+    border: 1.5px solid var(--gold);
+    color: var(--gold-deep);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 17px;
+    line-height:1;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition: background 0.25s ease, opacity 0.25s ease;
+  }
+  .client-cal-nav-btn:hover{
+    background: rgba(184,134,11,0.12);
+  }
+  .client-cal-nav-btn:disabled{
+    opacity: 0.3;
+    cursor:not-allowed;
+  }
+  .client-cal-month-label{
+    font-family:'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text-dark);
+  }
+  .client-cal-weekdays{
+    display:grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align:center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-dark-soft);
+    margin-bottom: 6px;
+  }
+  .client-cal-grid{
+    display:grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+  }
+  .client-cal-cell{
+    aspect-ratio: 1 / 1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family:'Assistant', sans-serif;
+  }
+  .client-cal-cell.empty{
+    visibility:hidden;
+  }
+  .client-cal-cell.unavailable{
+    color: var(--text-dark-soft);
+    opacity: 0.35;
+  }
+  .client-cal-cell.available{
+    background: rgba(184,134,11,0.1);
+    border: 1.5px solid var(--gold);
+    color: var(--gold-deep);
+    cursor:pointer;
+    transition: background 0.25s ease, transform 0.15s ease;
+  }
+  .client-cal-cell.available:hover{
+    background: rgba(184,134,11,0.22);
+    transform: translateY(-2px);
+  }
+  .client-cal-cell.selected{
+    background: var(--gold-gradient);
+    background-size: 200% auto;
+    color:#000;
+    border-color: var(--gold);
+    box-shadow: 0 0 14px rgba(184,134,11,0.4);
+  }
+
+  .booking-summary{
+    background: rgba(184,134,11,0.08);
+    border: 1px solid rgba(184,134,11,0.25);
+    border-radius: 14px;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gold-deep);
+    margin-bottom: 18px;
+  }
+
+  .booking-input{
+    width:100%;
+    padding: 13px 16px;
+    border-radius: 14px;
+    border: 1.5px solid rgba(184,134,11,0.35);
+    background: rgba(255,255,255,0.7);
+    color: var(--text-dark);
+    font-family:'Assistant', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    outline:none;
+    margin-bottom: 14px;
+    transition: border-color 0.3s ease;
+  }
+  .booking-input:focus{
+    border-color: var(--gold);
+  }
+  .booking-input::placeholder{
+    color: var(--text-dark-soft);
+    opacity: 0.7;
+  }
+
+  /* משתמש בסגנון כפתור הוואטסאפ הקיים, עם תוספת למרווח */
+  .booking-submit-btn{
+    width:100%;
+    justify-content:center;
+    border:none;
+    cursor:pointer;
+    font-family:'Assistant', sans-serif;
+  }
+  .booking-submit-btn:disabled{
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform:none !important;
+  }
+
+  /* ספינר טעינה קטן בתוך הכפתור */
+  .apt-spinner{
+    width: 18px;
+    height: 18px;
+    border: 2.5px solid rgba(0,0,0,0.25);
+    border-top-color: #000;
+    border-radius: 50%;
+    animation: bookingSpin 0.7s linear infinite;
+    display:inline-block;
+  }
+  @keyframes bookingSpin{
+    to{ transform: rotate(360deg); }
+  }
+
+  .booking-success-icon{
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--gold-gradient);
+    color:#000;
+    font-size: 28px;
+    font-weight: 800;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin: 0 auto 16px;
+  }
+  #step-success{
+    text-align:center;
+    color: var(--text-dark);
+    font-weight: 600;
+    line-height: 1.7;
+  }
+
+  .booking-error{
+    margin-top: 16px;
+    background: rgba(150,40,20,0.08);
+    border: 1px solid rgba(150,40,20,0.3);
+    color: #7A2E14;
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align:center;
+  }
+
+  .booking-retry{
+    margin-top: 10px;
+    background:none;
+    border:none;
+    color: var(--gold-deep);
+    text-decoration:underline;
+    font-weight:700;
+    cursor:pointer;
+    font-family:'Assistant', sans-serif;
+    font-size: 14px;
+  }
+
+  /* ✏️ שורת תור בחלונית "ביטול תור" */
+  .cancel-result-row{
+    background: rgba(184,134,11,0.08);
+    border: 1px solid rgba(184,134,11,0.25);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    text-align: right;
+  }
+  .cancel-result-row .cr-date{
+    font-family:'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--gold-deep);
+    font-size: 15px;
+  }
+  .cancel-result-row .cr-treatment{
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 14px;
+    margin: 2px 0 10px;
+  }
+  .cancel-result-row .cr-cancel-btn{
+    width:100%;
+    background: transparent;
+    border: 1.5px solid #963a1f;
+    color: #963a1f;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 9px 16px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+  .cancel-result-row .cr-cancel-btn:hover{
+    background: #963a1f;
+    color: #fff;
+  }
+
+  /* =========================================================
+     חלונית קביעת תור (Modal) - נפתחת מהכפתור בעמוד הפתיחה
+  ========================================================= */
+  .booking-modal-overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(20,15,5,0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display:none;
+    align-items:flex-start;
+    justify-content:center;
+    z-index: 3000;
+    padding: 30px 16px;
+    overflow-y:auto;
+  }
+  .booking-modal-overlay.show{
+    display:flex;
+  }
+  .booking-modal-card{
+    position:relative;
+    max-width: 460px;
+    width:100%;
+    margin: 4vh auto;
+    background: rgba(251,246,234,0.98);
+    border: 1px solid rgba(184,134,11,0.35);
+    border-radius: 24px;
+    padding: 34px 24px 28px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    text-align:center;
+  }
+  .booking-modal-close{
+    position:absolute;
+    top: 14px;
+    right: 14px;
+    background:none;
+    border:none;
+    font-size: 20px;
+    color: var(--text-dark-soft);
+    cursor:pointer;
+    width: 32px;
+    height:32px;
+  }
+
+  /* ✏️ טאבים למעבר בין "קביעת תורים" ל"ביטול תורים" בתוך אותה חלונית */
+  .modal-tabs{
+    display:flex;
+    gap: 8px;
+    margin: 6px 0 22px;
+    border-bottom: 1px solid rgba(184,134,11,0.25);
+  }
+  .modal-tab-btn{
+    flex:1;
+    background:none;
+    border:none;
+    padding: 10px 6px 14px;
+    font-family:'Assistant', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text-dark-soft);
+    cursor:pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.25s ease, border-color 0.25s ease;
+  }
+  .modal-tab-btn.active{
+    color: var(--gold-deep);
+    border-bottom-color: var(--gold);
+  }
+
+  /* ✏️ עיצוב תוכן המחירון - קטגוריות ופריטים */
+  .pricelist-category{
+    margin-bottom: 26px;
+  }
+  .pricelist-category:last-child{
+    margin-bottom: 0;
+  }
+  .pricelist-category-title{
+    font-family:'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 19px;
+    color: var(--gold-deep);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(184,134,11,0.3);
+  }
+  .pricelist-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px dashed rgba(184,134,11,0.2);
+  }
+  .pricelist-item:last-child{
+    border-bottom:none;
+  }
+  .pricelist-item-name{
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text-dark);
+  }
+  .pricelist-item-price{
+    font-family:'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--gold-deep);
+    white-space:nowrap;
+  }
+
+  /* ✏️ כפתור פרסום למפתח האתר - זהב מלא, ממורכז, מעל הפוטר */
+  .dev-cta-wrap{
+    text-align:center;
+    padding: 20px 20px 10px;
+  }
+  .dev-cta-btn{
+    display:inline-block;
+    background: var(--gold);
+    color: #000;
+    text-decoration:none;
+    font-weight: 700;
+    font-size: 11px;
+    padding: 7px 16px;
+    border-radius: 50px;
+    box-shadow: 0 0 20px rgba(212,175,55,0.3);
+    transition: all 0.3s ease;
+  }
+  .dev-cta-btn:hover{
+    background: var(--gold-light);
+    box-shadow: 0 0 32px rgba(212,175,55,0.5);
+    transform: translateY(-2px);
+  }
+
+  /* =========================================================
+     פוטר
+  ========================================================= */
+  footer{
+    text-align:center;
+    padding: 30px 20px;
+    border-top: 1px solid rgba(212,175,55,0.2);
+    font-size: 13px;
+    color: #777;
+    letter-spacing: 1px;
+  }
+  .contact-address-title{
+    font-family:'Rubik', sans-serif;
+    font-weight: 700;
+    font-size: clamp(26px, 4vw, 34px); /* ✏️ זהה בדיוק לגודל של שאר כותרות הסקשנים */
+    letter-spacing: 0.5px;
+    margin-top: 90px;
+    margin-bottom: 30px;
+  }
+  .contact-address{
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-dark);
+    letter-spacing: 0.5px;
+    text-align:center;
+  }
+  footer span{
+    font-weight: 700;
+    background: var(--gold-gradient);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: var(--gold);
+  }
+
+  /* =========================================================
+     רספונסיביות למובייל
+  ========================================================= */
+  @media (max-width: 768px){
+    .section{
+      padding: 60px 6%;
+    }
+    .about-highlights{
+      gap: 26px;
+    }
+  }
+
+  @media (max-width: 480px){
+    .logo{
+      font-size: 22px;
+    }
+  }
+
+  /* =========================================================
+     ✏️ התאמה למסכי מחשב/דסקטופ - הכל למטה חל *רק* מ-901px ומעלה,
+     כך שהמובייל נשאר בדיוק כמו שעיצבנו ולא נוגעים בו כלל.
+  ========================================================= */
+  @media (min-width: 901px){
+    /* ✏️ מציגים את התפריט האופקי (מוסתר כברירת מחדל, ראה למעלה) */
+    .desktop-nav{
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+    }
+
+    /* ✏️ במחשב מסתירים את כפתור ההמבורגר וגם את הפאנל הנגלל - יש במקומם תפריט אופקי (למעלה) */
+    .hamburger{
+      display:none;
+    }
+
+    /* גובה ה-Hero: ה-padding העליון (18vh) הופך לענק במסכים גבוהים - נותנים לו תקרה */
+    .hero{
+      padding-top: clamp(40px, 7vh, 100px);
+    }
+
+    /* ✏️ הלוגו - קטן טיפה יותר מהתקרה של המובייל (120px), כך שבמסך הרחב הוא לא מרגיש כבד/לא-פרופורציונלי */
+    .hero-logo{
+      font-size: clamp(70px, 6vw, 96px);
+    }
+    .hero-subtitle{
+      font-size: 20px;
+      max-width: 600px;
+    }
+
+    /* ✏️ התיקון המרכזי: בטלפון הכפתורים ממוקמים לפי אחוז-מהתחתית (bottom:18%), וזה
+       עבד כי מסכי טלפון גבוהים מאוד יחסית לרוחב. במחשב, מסכים נמוכים יותר יחסית -
+       ולכן ה-18% "דחף" את הכפתורים להתנגש עם הכותרת מעליהם. הפתרון: במחשב, במקום
+       למקם את הכפתורים "בכוח" ליד התחתית, פשוט נותנים להם לזרום טבעי אחרי הכותרת. */
+    .hero-cta-wrap{
+      position: static;
+      margin-top: 36px;
+    }
+
+    /* ✏️ "גללי למטה" היה ממוקם לפי מרחק קבוע מהתחתית (bottom:55px) - וזה גרם לו
+       "לשבת" בדיוק על הכפתורים כשתוכן ה-Hero זורם באופן טבעי (השינוי למעלה).
+       הפתרון: גם הוא זורם עכשיו בטבעיות, אחרי הכפתורים - אף פעם לא יחפוף. */
+    .hero-scroll-hint{
+      position: static;
+      display:block;
+      margin-top: 26px;
+    }
+
+    /* הכפתורים בעמוד הבית - גודל קבוע ונעים במקום יחסי ל-vw (שהיה מיועד למובייל) */
+    .hero-cta-btn{
+      width: 300px;
+      font-size: 19px;
+    }
+    .hero-secondary-row{
+      width: 300px;
+      margin-left:auto;
+      margin-right:auto;
+    }
+    .hero-contact-btn{
+      font-size: 15px;
+      padding: 13px 18px;
+    }
+
+    /* הסקשנים (אודות/גלריה/יצירת קשר) - קצת יותר נשימה בצדדים במסך רחב */
+    .section{
+      padding: 90px 6%;
+    }
+
+    /* ✏️ הגלריה במחשב - ממורכזת וברוחב נעים, לא נמתחת על פני כל המסך */
+    .gallery-carousel{
+      max-width: 500px;
+      margin: 0 auto;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========================================================= -->
+<!-- תפריט עליון -->
+<!-- ========================================================= -->
+<header>
+  <!-- כפתור ההמבורגר - מוצג רק במובייל (נעלם במחשב דרך המדיה-קוורי) -->
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- ✏️ תפריט אופקי - מוצג רק במחשב (min-width:901px), מוסתר לגמרי במובייל -->
+  <nav class="desktop-nav">
+    <a onclick="openBookingModal()">קביעת תורים</a>
+    <a onclick="openCancelModal()">ביטול תורים</a>
+    <a onclick="scrollToSection('about')">אודות</a>
+    <a onclick="scrollToSection('gallery')">דוגמאות</a>
+    <a onclick="openPriceListModal()">מחירון</a>
+    <a onclick="scrollToSection('contact')">יצירת קשר</a>
+  </nav>
+</header>
+
+<!-- שכבת רקע כהה שמופיעה כשהתפריט פתוח -->
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<!-- תפריט צד נפתח -->
+<nav class="nav-menu" id="navMenu">
+  <div class="nav-menu-list">
+    <!-- ✏️ שמות פריטי התפריט - ניתן לשנות את הטקסט שמופיע בתפריט -->
+    <a href="#booking" onclick="event.preventDefault(); openBookingModal(); hamburger.classList.remove('active'); navMenu.classList.remove('open'); overlay.classList.remove('show');">קביעת תורים</a>
+    <a href="#cancel" onclick="event.preventDefault(); openCancelModal(); hamburger.classList.remove('active'); navMenu.classList.remove('open'); overlay.classList.remove('show');">ביטול תורים</a>
+    <a href="#about" onclick="scrollToSection('about')">אודות</a>
+    <a href="#gallery" class="nav-gallery-link" onclick="scrollToSection('gallery')">דוגמאות</a>
+    <a href="#contact" onclick="scrollToSection('contact')">יצירת קשר</a>
+  </div>
+</nav>
+
+<!-- ========================================================= -->
+<!-- אזור פתיחה (Hero) -->
+<!-- ========================================================= -->
+<section class="hero" id="home">
+  <div class="hero-logo gold-metal">Miriam<br>Omesi</div>
+  <div class="hero-divider"></div>
+  <!-- ✏️ המשפט מתחת ללוגו - שנה כאן -->
+  <div class="hero-subtitle">לק ג'ל | פדיקור רפואי | גבות</div>
+  <!-- ✏️ משפט נוסף מתחתיו -->
+  <div class="hero-tagline">קליניקה מקצועית בנתיבות לטיפוח ויופי, תני ליופי שלך להיות בידיים טובות</div>
+
+  <!-- ✏️ כפתור קביעת תור - בשליש התחתון של המסך, פותח חלונית מיידית -->
+  <div class="hero-cta-wrap">
+    <button class="whatsapp-btn hero-cta-btn" onclick="openBookingModal()">קביעת תורים</button>
+    <div class="hero-cta-caption">לקביעת / ביטול תורים מהירה אוטומטית לחצי כאן</div>
+
+    <!-- ✏️ שורת כפתורים חלולים - יצירת קשר ומחירון, זה לצד זה -->
+    <div class="hero-secondary-row">
+      <button class="hero-contact-btn" onclick="scrollToSection('contact')">יצירת קשר</button>
+      <button class="hero-contact-btn" onclick="openPriceListModal()">מחירון</button>
+    </div>
+  </div>
+
+  <div class="hero-scroll-hint">גללי למטה ↓</div>
+</section>
+
+<!-- ========================================================= -->
+<!-- חלונית קביעת תור - נפתחת בלחיצה על הכפתור, לא סקשן קבוע בדף -->
+<!-- ========================================================= -->
+<div id="booking-modal-overlay" class="booking-modal-overlay" onclick="if(event.target===this) closeBookingModal()">
+  <div class="booking-modal-card">
+    <button class="booking-modal-close" onclick="closeBookingModal()">✕</button>
+
+    <!-- ✏️ טאבים למעבר בין קביעת תורים לביטול תורים, בתוך אותה חלונית -->
+    <div class="modal-tabs">
+      <button id="tab-btn-booking" class="modal-tab-btn active" onclick="switchModalTab('booking')">קביעת תורים</button>
+      <button id="tab-btn-cancel" class="modal-tab-btn" onclick="switchModalTab('cancel')">ביטול תורים</button>
+    </div>
+
+    <!-- ---------- טאב 1: קביעת תורים ---------- -->
+    <div id="tab-panel-booking">
+      <!-- ✏️ פסקת פתיחה בסקשן קביעת תור - שנה את הטקסט לפי הצורך -->
+      <p class="booking-intro">
+        בחרי תאריך ושעה נוחים לך, ואני אאשר את התור בהקדם.
+      </p>
+
+      <div class="booking-widget">
+
+        <!-- שלב 1: בחירת סוג טיפול -->
+        <div class="booking-step" id="step-treatment">
+          <div class="booking-label">בחרי טיפול</div>
+          <select id="apt-treatment" class="booking-date-input">
+            <option value="">טוענת רשימת טיפולים...</option>
+          </select>
+        </div>
+
+        <!-- שלב 2: בחירת תאריך - מוצג רק אחרי שנבחר טיפול -->
+        <div class="booking-step" id="step-date" hidden>
+          <div class="booking-label">בחרי תאריך</div>
+          <div class="client-cal-nav">
+            <button type="button" id="client-cal-prev" class="client-cal-nav-btn" onclick="changeClientCalMonth(-1)">‹</button>
+            <div id="client-cal-month-label" class="client-cal-month-label"></div>
+            <button type="button" id="client-cal-next" class="client-cal-nav-btn" onclick="changeClientCalMonth(1)">›</button>
+          </div>
+          <div class="client-cal-weekdays">
+            <span>א</span><span>ב</span><span>ג</span><span>ד</span><span>ה</span><span>ו</span><span>ש</span>
+          </div>
+          <div id="client-cal-grid" class="client-cal-grid"></div>
+          <div id="client-cal-loading" class="slots-loading" hidden>טוענת זמינות...</div>
+        </div>
+
+        <!-- שלב 3: בחירת שעה - מוצג רק אחרי שנבחר תאריך -->
+        <div class="booking-step" id="step-slots" hidden>
+          <div class="booking-label">בחרי שעה</div>
+          <div id="slots-loading" class="slots-loading" hidden>טוענת שעות פנויות</div>
+          <div id="slots-empty" class="slots-empty" hidden>אין תורים פנויים בתאריך זה, נסי תאריך אחר</div>
+          <div id="slots-container" class="slots-grid"></div>
+        </div>
+
+        <!-- שלב 4: פרטי הלקוחה - מוצג רק אחרי שנבחרה שעה -->
+        <div class="booking-step" id="step-form" hidden>
+          <div class="booking-summary" id="booking-summary"></div>
+          <input type="text" id="apt-name" class="booking-input" placeholder="שם מלא" required>
+          <input type="tel" id="apt-phone" class="booking-input" placeholder="מספר טלפון" required>
+          <input type="email" id="apt-email" class="booking-input" placeholder="אימייל (לא חובה, לקבלת אישור)">
+          <button id="apt-submit" class="whatsapp-btn booking-submit-btn" onclick="submitBooking()">
+            <span id="apt-submit-text">קבעי תור</span>
+            <span id="apt-spinner" class="apt-spinner" hidden></span>
+          </button>
+        </div>
+
+        <!-- שלב 5: הודעת הצלחה -->
+        <div class="booking-step" id="step-success" hidden>
+          <div class="booking-success-icon">✓</div>
+          <p id="success-text">התור נקבע בהצלחה!</p>
+          <!-- ✏️ כפתור וואטסאפ מוכן-מראש לשליחת אישור מהיר, עם פרטי התור כבר ממולאים -->
+          <a id="success-whatsapp-btn" class="whatsapp-btn" target="_blank" style="margin-top:18px;">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m0 1.8a8.1 8.1 0 0 1 8.11 8.11c0 4.48-3.64 8.11-8.12 8.11a8.06 8.06 0 0 1-4.1-1.12l-.3-.17-3.12.82.83-3.04-.19-.3a8.05 8.05 0 0 1-1.24-4.3c0-4.48 3.65-8.11 8.13-8.11M8.53 7.33c-.16 0-.43.06-.66.31s-.87.86-.87 2.07.89 2.39 1.02 2.56c.12.16 1.75 2.68 4.29 3.65 2.12.81 2.55.65 3.01.61.46-.05 1.49-.61 1.7-1.19.21-.58.21-1.08.15-1.19-.07-.1-.24-.16-.5-.29s-1.49-.74-1.72-.82c-.23-.08-.4-.13-.57.13-.16.26-.65.82-.8.99-.15.16-.29.18-.55.06-.26-.13-1.09-.4-2.09-1.29-.77-.69-1.29-1.53-1.44-1.79-.15-.26-.02-.4.11-.53.12-.12.26-.31.4-.47.13-.16.17-.26.26-.44.09-.18.04-.34-.02-.47-.06-.13-.57-1.42-.79-1.94-.2-.5-.42-.44-.57-.44Z"/></svg>
+            <span>שליחת אישור בוואטסאפ</span>
+          </a>
+        </div>
+
+        <!-- הודעת שגיאה, מוצגת רק כשמשהו נכשל -->
+        <div id="booking-error" class="booking-error" hidden>
+          <div id="booking-error-text">אירעה שגיאה, אנא נסי שוב</div>
+          <button class="booking-retry" onclick="hideError()">סגירה</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ---------- טאב 2: ביטול תורים ---------- -->
+    <div id="tab-panel-cancel" hidden>
+      <p class="booking-intro">
+        הזיני את מספר הטלפון שאיתו קבעת, ונציג לך את התורים הפתוחים שלך.
+      </p>
+
+      <div class="booking-widget">
+
+        <div class="booking-step">
+          <div class="booking-label">מספר טלפון</div>
+          <input type="tel" id="cancel-phone-input" class="booking-input" placeholder="מספר טלפון">
+          <button class="whatsapp-btn booking-submit-btn" onclick="searchMyBookings()">חיפוש התורים שלי</button>
+        </div>
+
+        <div class="booking-step" id="cancel-results-step" hidden style="margin-top:24px;">
+          <div class="booking-label">התורים שלך</div>
+          <div id="cancel-loading" class="slots-loading" hidden>מחפשת...</div>
+          <div id="cancel-empty" class="slots-empty" hidden>לא נמצאו תורים עתידיים עם המספר הזה</div>
+          <div id="cancel-results-list"></div>
+        </div>
+
+        <div id="cancel-success" class="booking-step" hidden style="text-align:center;">
+          <div class="booking-success-icon">✓</div>
+          <p>התור בוטל בהצלחה.</p>
+        </div>
+
+        <div id="cancel-error" class="booking-error" hidden>
+          <div id="cancel-error-text">אירעה שגיאה, אנא נסי שוב</div>
+          <button class="booking-retry" onclick="document.getElementById('cancel-error').hidden = true;">סגירה</button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- חלונית מחירון - נטענת מהשרת, מחולקת לקטגוריות -->
+<!-- ========================================================= -->
+<div id="pricelist-modal-overlay" class="booking-modal-overlay" onclick="if(event.target===this) closePriceListModal()">
+  <div class="booking-modal-card">
+    <button class="booking-modal-close" onclick="closePriceListModal()">✕</button>
+    <h2 class="section-title gold-metal" style="margin-bottom:22px;">מחירון</h2>
+
+    <div id="pricelist-loading" class="slots-loading">טוען מחירון...</div>
+    <div id="pricelist-empty" class="slots-empty" hidden>המחירון עדיין ריק</div>
+    <div id="pricelist-content"></div>
+  </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- אזור אודות -->
+<!-- ========================================================= -->
+<section class="section" id="about">
+  <!-- ✏️ כותרת סקשן "אודות" -->
+  <h2 class="section-title gold-metal">אודות</h2>
+  <div class="section-divider"></div>
+
+  <!-- ✏️ פסקת התוכן המרכזית בסקשן אודות - כתבי כאן על עצמך, הניסיון וההשכלה שלך -->
+  <p class="about-text">
+    המקום שבו יופי, מקצועיות ושירות אישי נפגשים. כל טיפול מתבצע בקפדנות,
+    עם חומרים איכותיים ותשומת לב לכל פרט, כדי שתצאי עם תחושה נהדרת ותוצאה שתאהבי.
+  </p>
+</section>
+
+<!-- ========================================================= -->
+<!-- אזור עבודות לדוגמה (גלריה) -->
+<!-- ========================================================= -->
+<section class="section" id="gallery">
+  <!-- ✏️ כותרת סקשן "עבודות לדוגמה" -->
+  <h2 class="section-title gold-metal">עבודות לדוגמה</h2>
+  <div class="section-divider"></div>
+
+  <div class="gallery-carousel" id="galleryCarousel">
+
+    <!-- שקופית 1 - ✏️ שם הקובץ צריך להיות בדיוק work1.jpg, מועלה לאותה תיקייה כמו index.html -->
+    <div class="gallery-slide">
+      <div class="gallery-slide-image"><img src="work1.jpg" alt="עבודה לדוגמה 1" loading="eager" decoding="async"></div>
+    </div>
+
+    <!-- שקופית 2 -->
+    <div class="gallery-slide">
+      <div class="gallery-slide-image"><img src="work2.jpg" alt="עבודה לדוגמה 2" loading="lazy" decoding="async"></div>
+    </div>
+
+    <!-- שקופית 3 -->
+    <div class="gallery-slide">
+      <div class="gallery-slide-image"><img src="work3.jpg" alt="עבודה לדוגמה 3" loading="lazy" decoding="async"></div>
+    </div>
+
+    <!-- שקופית 4 -->
+    <div class="gallery-slide">
+      <div class="gallery-slide-image"><img src="work4.jpg" alt="עבודה לדוגמה 4" loading="lazy" decoding="async"></div>
+    </div>
+
+    <!-- שקופית 5 -->
+    <div class="gallery-slide">
+      <div class="gallery-slide-image"><img src="work5.jpg" alt="עבודה לדוגמה 5" loading="lazy" decoding="async"></div>
+    </div>
+
+    <!-- שקופית 6 -->
+    <div class="gallery-slide">
+      <div class="gallery-slide-image"><img src="work6.jpg" alt="עבודה לדוגמה 6" loading="lazy" decoding="async"></div>
+    </div>
+
+    <!-- שקופית 7 -->
+    <div class="gallery-slide">
+      <div class="gallery-slide-image"><img src="work7.jpg" alt="עבודה לדוגמה 7" loading="lazy" decoding="async"></div>
+    </div>
+
+    <!-- שקופית 8 -->
+    <div class="gallery-slide">
+      <div class="gallery-slide-image"><img src="work8.jpg" alt="עבודה לדוגמה 8" loading="lazy" decoding="async"></div>
+    </div>
+
+    <!-- שקופית 9 -->
+    <div class="gallery-slide">
+      <div class="gallery-slide-image"><img src="work9.jpg" alt="עבודה לדוגמה 9" loading="lazy" decoding="async"></div>
+    </div>
+
+    <!-- שקופית 10 -->
+    <div class="gallery-slide">
+      <div class="gallery-slide-image"><img src="work10.jpg" alt="עבודה לדוגמה 10" loading="lazy" decoding="async"></div>
+    </div>
+
+    <!-- שקופית 11 -->
+    <div class="gallery-slide">
+      <div class="gallery-slide-image"><img src="work11.jpg" alt="עבודה לדוגמה 11" loading="lazy" decoding="async"></div>
+    </div>
+
+  </div>
+
+  <!-- ✏️ הגלגלת - כמו גלגל מספרים בכספת, גוללים אותה ימינה/שמאלה כדי להחליף תמונה -->
+  <div class="gallery-wheel-wrap">
+    <div class="gallery-wheel-pointer">▼</div>
+    <div class="gallery-wheel-track" id="galleryWheelTrack">
+      <div class="gallery-wheel-spacer"></div>
+      <div class="gallery-wheel-tick active" data-index="0">1</div>
+      <div class="gallery-wheel-tick" data-index="1">2</div>
+      <div class="gallery-wheel-tick" data-index="2">3</div>
+      <div class="gallery-wheel-tick" data-index="3">4</div>
+      <div class="gallery-wheel-tick" data-index="4">5</div>
+      <div class="gallery-wheel-tick" data-index="5">6</div>
+      <div class="gallery-wheel-tick" data-index="6">7</div>
+      <div class="gallery-wheel-tick" data-index="7">8</div>
+      <div class="gallery-wheel-tick" data-index="8">9</div>
+      <div class="gallery-wheel-tick" data-index="9">10</div>
+      <div class="gallery-wheel-tick" data-index="10">11</div>
+      <div class="gallery-wheel-spacer"></div>
+    </div>
+  </div>
+
+  <!-- ✏️ רמז לגלילה - מתחת לגלגלת, אפשר לערוך את הטקסט -->
+  <div class="gallery-hint">→ גללי ימינה / שמאלה ←</div>
+</section>
+
+
+<!-- ========================================================= -->
+<!-- אזור יצירת קשר -->
+<!-- ========================================================= -->
+<section class="section" id="contact">
+  <!-- ✏️ כותרת סקשן "יצירת קשר" -->
+  <h2 class="section-title gold-metal">יצירת קשר</h2>
+  <div class="section-divider"></div>
+
+  <!-- ✏️ פסקת ההזמנה לפנייה - שנה כאן את הטקסט -->
+  <p class="contact-text">
+    מוזמנת לקבוע תור, לשאול שאלה או פשוט להכיר.<br>
+    אני כאן בשבילך - לחצי על הכפתור ונדבר בוואטסאפ.
+  </p>
+
+  <!-- ✏️ שורת אייקונים עגולים ליצירת קשר - כל אחד קישור לחיץ -->
+  <div class="contact-icons">
+
+    <!-- ✏️ ניווט בוויז - לשינוי הכתובת, שני את הטקסט אחרי q= (המרווחים כבר מיוצגים כ-+) -->
+    <a href="https://waze.com/ul?q=רחוב+יהדות+איטליה+12+נתיבות" target="_blank" class="contact-icon-item">
+      <div class="contact-icon-circle">
+        <svg class="icon-waze" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      </div>
+      <span>וויז</span>
+    </a>
+
+    <!-- ✏️ מייל - שני את הכתובת בשני המקומות (href וגם אם רוצים להציג טקסט אחר) -->
+    <a href="mailto:miriamomesi1992@gmail.com" class="contact-icon-item">
+      <div class="contact-icon-circle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </div>
+      <span>מייל</span>
+    </a>
+
+    <!-- ✏️ טלפון - שני את המספר אחרי tel: (בלי רווחים ומקפים) -->
+    <a href="tel:+972559487515" class="contact-icon-item">
+      <div class="contact-icon-circle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </div>
+      <span>טלפון</span>
+    </a>
+
+    <!-- ✏️ וואטסאפ - אותו מספר כמו הכפתור הגדול למעלה -->
+    <a href="https://wa.me/972559487515" target="_blank" class="contact-icon-item">
+      <div class="contact-icon-circle">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m0 1.8a8.1 8.1 0 0 1 8.11 8.11c0 4.48-3.64 8.11-8.12 8.11a8.06 8.06 0 0 1-4.1-1.12l-.3-.17-3.12.82.83-3.04-.19-.3a8.05 8.05 0 0 1-1.24-4.3c0-4.48 3.65-8.11 8.13-8.11M8.53 7.33c-.16 0-.43.06-.66.31s-.87.86-.87 2.07.89 2.39 1.02 2.56c.12.16 1.75 2.68 4.29 3.65 2.12.81 2.55.65 3.01.61.46-.05 1.49-.61 1.7-1.19.21-.58.21-1.08.15-1.19-.07-.1-.24-.16-.5-.29s-1.49-.74-1.72-.82c-.23-.08-.4-.13-.57.13-.16.26-.65.82-.8.99-.15.16-.29.18-.55.06-.26-.13-1.09-.4-2.09-1.29-.77-.69-1.29-1.53-1.44-1.79-.15-.26-.02-.4.11-.53.12-.12.26-.31.4-.47.13-.16.17-.26.26-.44.09-.18.04-.34-.02-.47-.06-.13-.57-1.42-.79-1.94-.2-.5-.42-.44-.57-.44Z"/></svg>
+      </div>
+      <span>וואטסאפ</span>
+    </a>
+
+  </div>
+
+  <!-- ✏️ כתובת הקליניקה - מתחת לשורת האייקונים -->
+  <div class="contact-address-title gold-metal">המיקום שלנו</div>
+  <div class="contact-address">רחוב יהדות איטליה 12, נווה שרון, נתיבות</div>
+</section>
+
+<!-- ========================================================= -->
+<!-- כפתור פרסום למפתח האתר -->
+<!-- ========================================================= -->
+<div class="dev-cta-wrap">
+  <!-- ✏️ קישור וואטסאפ - שני את המספר בקישור אם צריך (972 + מספר בלי 0 מוביל) -->
+  <a href="https://wa.me/972552778348?text=%D7%94%D7%99%D7%99%2C%20%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%90%D7%AA%20%D7%94%D7%90%D7%AA%D7%A8%20%D7%A9%D7%9C%20%D7%9E%D7%A8%D7%99%D7%9D%20%D7%95%D7%90%D7%A0%D7%99%20%D7%92%D7%9D%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%90%D7%AA%D7%A8%20%D7%9B%D7%96%D7%94" target="_blank" class="dev-cta-btn">
+    רוצים גם אתר כזה? לחצו כאן
+  </a>
+</div>
+
+<!-- ========================================================= -->
+<!-- פוטר -->
+<!-- ========================================================= -->
+<footer>
+  <!-- ✏️ טקסט הפוטר - זכויות יוצרים -->
+  © 2026 <span>Yosef Omesi</span> | כל הזכויות שמורות
+</footer>
+
+<!-- ========================================================= -->
+<!-- קוד JavaScript לפתיחת תפריט וגלילה חלקה -->
+<!-- ========================================================= -->
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const navMenu = document.getElementById('navMenu');
+  const overlay = document.getElementById('overlay');
+
+  /* ✏️ ה"גלגלת" - כמו גלגל מספרים בכספת: גוללים אותה (ביד/עכבר) והיא "נצמדת" למספר,
+     בדיוק כמו הגלריה עצמה - שני האלמנטים מסונכרנים דו-כיוונית.
+     שימוש ב-getBoundingClientRect/scrollIntoView במקום חישובי scrollLeft, כי scrollLeft
+     לא אמין ומתנהג אחרת בין דפדפנים כשהדף הוא RTL (עברית) - זו הייתה הסיבה לחוסר הסנכרון. */
+  (function initGalleryWheel(){
+    const carousel = document.getElementById('galleryCarousel');
+    const wheelTrack = document.getElementById('galleryWheelTrack');
+    if(!carousel || !wheelTrack) return;
+
+    const slides = Array.from(carousel.querySelectorAll('.gallery-slide'));
+    const ticks = Array.from(wheelTrack.querySelectorAll('.gallery-wheel-tick'));
+    let currentIndex = 0;
+    let syncing = false; // מונע "לולאת" עדכונים הדדית בין שני האלמנטים
+
+    // מוצאת איזה איבר (שקופית/ספרה) הכי קרוב למרכז הקונטיינר שלו כרגע
+    function centerIndexOf(container, items){
+      const containerRect = container.getBoundingClientRect();
+      const containerCenter = containerRect.left + containerRect.width / 2;
+      let closestIdx = 0, closestDist = Infinity;
+      items.forEach((item, i) => {
+        const r = item.getBoundingClientRect();
+        const itemCenter = r.left + r.width / 2;
+        const dist = Math.abs(itemCenter - containerCenter);
+        if(dist < closestDist){ closestDist = dist; closestIdx = i; }
+      });
+      return closestIdx;
+    }
+
+    function setActiveTick(idx){
+      ticks.forEach(t => t.classList.remove('active'));
+      if(ticks[idx]) ticks[idx].classList.add('active');
+    }
+
+    function vibrateTick(){
+      // ✏️ רטט קצר בטלפון - רק כשבאמת עוברים למספר אחר (עובד רק על מכשירים שתומכים)
+      if(navigator.vibrate) navigator.vibrate(12);
+    }
+
+    function goToIndex(idx){
+      idx = Math.max(0, Math.min(slides.length - 1, idx));
+      if(idx === currentIndex) return;
+      currentIndex = idx;
+      setActiveTick(idx);
+      vibrateTick();
+      syncing = true;
+      slides[idx].scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
+      ticks[idx].scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
+      setTimeout(() => { syncing = false; }, 400);
+    }
+
+    // לחיצה ישירה על מספר בגלגלת קופצת ישר לתמונה שלו
+    ticks.forEach((tick, idx) => {
+      tick.addEventListener('click', () => goToIndex(idx));
+    });
+
+    // ✏️ גוללים את הגלגלת ביד (חלק וטבעי, עם עצירה על כל מספר בזכות scroll-snap ב-CSS)
+    // -> מזיזים את הגלריה בהתאם. עובד גם עם swipe מהיר רציף, לא רק צעד-צעד.
+    let wheelScrollTimeout;
+    wheelTrack.addEventListener('scroll', () => {
+      if(syncing) return;
+      clearTimeout(wheelScrollTimeout);
+      wheelScrollTimeout = setTimeout(() => {
+        const idx = centerIndexOf(wheelTrack, ticks);
+        setActiveTick(idx);
+        if(idx !== currentIndex){
+          currentIndex = idx;
+          vibrateTick();
+          syncing = true;
+          slides[idx].scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
+          setTimeout(() => { syncing = false; }, 400);
+        }
+      }, 80);
+    });
+
+    // גוללים את הגלריה עצמה (swipe על התמונה) -> מזיזים את הגלגלת בהתאם
+    let carouselScrollTimeout;
+    carousel.addEventListener('scroll', () => {
+      if(syncing) return;
+      clearTimeout(carouselScrollTimeout);
+      carouselScrollTimeout = setTimeout(() => {
+        const idx = centerIndexOf(carousel, slides);
+        setActiveTick(idx); // תמיד מעדכנים את ההדגשה לפי מה שבאמת מרכז המסך כרגע
+        if(idx !== currentIndex){
+          currentIndex = idx;
+          vibrateTick();
+          syncing = true;
+          ticks[idx].scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
+          setTimeout(() => { syncing = false; }, 400);
+        }
+      }, 80);
+    });
+  })();
+
+  // פתיחה/סגירה של תפריט ההמבורגר
+  function toggleMenu(){
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('open');
+    overlay.classList.toggle('show');
+  }
+
+  // גלילה חלקה לאזור המבוקש + סגירת התפריט אחרי לחיצה
+  function scrollToSection(id){
+    const el = document.getElementById(id);
+    if(el){
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+    // סגירת התפריט אחרי הבחירה
+    hamburger.classList.remove('active');
+    navMenu.classList.remove('open');
+    overlay.classList.remove('show');
+  }
+
+  /* =========================================================
+     מערכת קביעת תור - מתחברת ל-Google Apps Script
+  ========================================================= */
+
+  // ✏️ פתיחה/סגירה של חלונית קביעת/ביטול תורים. tab: 'booking' (ברירת מחדל) או 'cancel'
+  function openBookingModal(tab){
+    document.getElementById('booking-modal-overlay').classList.add('show');
+    document.body.style.overflow = 'hidden'; // מונע גלילה של הרקע כשהחלונית פתוחה
+    switchModalTab(tab || 'booking');
+  }
+  function closeBookingModal(){
+    document.getElementById('booking-modal-overlay').classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
+  // קיצור נוח לפתיחה ישירות בטאב הביטול
+  function openCancelModal(){
+    openBookingModal('cancel');
+  }
+
+  // מחליפה בין הטאב "קביעת תורים" לטאב "ביטול תורים" בתוך אותה חלונית
+  function switchModalTab(tab){
+    const isBooking = tab === 'booking';
+    document.getElementById('tab-panel-booking').hidden = !isBooking;
+    document.getElementById('tab-panel-cancel').hidden = isBooking;
+    document.getElementById('tab-btn-booking').classList.toggle('active', isBooking);
+    document.getElementById('tab-btn-cancel').classList.toggle('active', !isBooking);
+  }
+
+  /* =========================================================
+     מחירון
+  ========================================================= */
+  let priceListLoaded = false;
+
+  function openPriceListModal(){
+    document.getElementById('pricelist-modal-overlay').classList.add('show');
+    document.body.style.overflow = 'hidden';
+    if(!priceListLoaded) loadPriceList(); // טוענים מהשרת רק פעם אחת, לא בכל פתיחה
+  }
+  function closePriceListModal(){
+    document.getElementById('pricelist-modal-overlay').classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
+  async function loadPriceList(){
+    const loadingEl = document.getElementById('pricelist-loading');
+    const emptyEl = document.getElementById('pricelist-empty');
+    const contentEl = document.getElementById('pricelist-content');
+
+    try{
+      const res = await fetch(`${APPS_SCRIPT_URL}?action=getPriceList`);
+      const data = await res.json();
+      loadingEl.hidden = true;
+
+      if(!data.success || !data.categories || data.categories.length === 0){
+        emptyEl.hidden = false;
+        return;
+      }
+
+      priceListLoaded = true;
+      contentEl.innerHTML = '';
+
+      data.categories.forEach(cat => {
+        const catDiv = document.createElement('div');
+        catDiv.className = 'pricelist-category';
+
+        const title = document.createElement('div');
+        title.className = 'pricelist-category-title';
+        title.textContent = cat.category;
+        catDiv.appendChild(title);
+
+        (cat.items || []).forEach(item => {
+          const row = document.createElement('div');
+          row.className = 'pricelist-item';
+          row.innerHTML = `
+            <span class="pricelist-item-name">${escapeHtml(item.name)}</span>
+            <span class="pricelist-item-price">₪${escapeHtml(String(item.price))}</span>
+          `;
+          catDiv.appendChild(row);
+        });
+
+        contentEl.appendChild(catDiv);
+      });
+
+    }catch(err){
+      loadingEl.textContent = 'אירעה שגיאה בטעינת המחירון';
+    }
+  }
+
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // מחפשת את התורים העתידיים של הלקוחה לפי מספר הטלפון שהזינה
+  async function searchMyBookings(){
+    const phone = document.getElementById('cancel-phone-input').value.trim();
+    const resultsStep = document.getElementById('cancel-results-step');
+    const loadingEl = document.getElementById('cancel-loading');
+    const emptyEl = document.getElementById('cancel-empty');
+    const listEl = document.getElementById('cancel-results-list');
+    document.getElementById('cancel-error').hidden = true;
+    document.getElementById('cancel-success').hidden = true;
+
+    if(!phone){
+      showCancelError('נא להזין מספר טלפון');
+      return;
+    }
+
+    resultsStep.hidden = false;
+    listEl.innerHTML = '';
+    emptyEl.hidden = true;
+    loadingEl.hidden = false;
+
+    try{
+      const res = await fetch(`${APPS_SCRIPT_URL}?action=getClientBookings&phone=${encodeURIComponent(phone)}`);
+      const data = await res.json();
+      loadingEl.hidden = true;
+
+      if(!data.success){
+        showCancelError(data.error || 'אירעה שגיאה בחיפוש');
+        return;
+      }
+
+      if(!data.bookings || data.bookings.length === 0){
+        emptyEl.hidden = false;
+        return;
+      }
+
+      data.bookings.forEach(b => {
+        const dateObj = new Date(b.date + 'T12:00:00');
+        const formattedDate = dateObj.toLocaleDateString('he-IL', { weekday:'long', day:'numeric', month:'long' });
+
+        const row = document.createElement('div');
+        row.className = 'cancel-result-row';
+        row.innerHTML = `
+          <div class="cr-date">${formattedDate} · ${b.time}</div>
+          <div class="cr-treatment">${b.treatment || ''}</div>
+        `;
+        const cancelBtn = document.createElement('button');
+        cancelBtn.className = 'cr-cancel-btn';
+        cancelBtn.textContent = 'ביטול תור זה';
+        cancelBtn.onclick = () => cancelMyBooking(b.id, phone, row);
+        row.appendChild(cancelBtn);
+        listEl.appendChild(row);
+      });
+
+    }catch(err){
+      loadingEl.hidden = true;
+      showCancelError('אירעה שגיאה, אנא נסי שוב');
+    }
+  }
+
+  // מבטלת תור ספציפי, אחרי אישור מהלקוחה
+  async function cancelMyBooking(eventId, phone, rowEl){
+    if(!confirm('לבטל את התור הזה?')) return;
+
+    try{
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          action: 'cancelClientBooking',
+          eventId: eventId,
+          phone: phone
+        })
+      });
+      const data = await res.json();
+
+      if(!data.success){
+        showCancelError(data.error || 'אירעה שגיאה בביטול התור');
+        return;
+      }
+
+      rowEl.remove();
+      document.getElementById('cancel-success').hidden = false;
+      document.getElementById('cancel-success').scrollIntoView({ behavior:'smooth', block:'center' });
+
+    }catch(err){
+      showCancelError('אירעה שגיאה בביטול, אנא נסי שוב');
+    }
+  }
+
+  function showCancelError(msg){
+    const errorBox = document.getElementById('cancel-error');
+    document.getElementById('cancel-error-text').textContent = msg;
+    errorBox.hidden = false;
+    errorBox.scrollIntoView({ behavior:'smooth', block:'center' });
+  }
+
+  // ✏️ הדבק כאן את כתובת ה-Web App שקיבלת אחרי פריסת ה-Google Apps Script (Code.gs)
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxqGHEFPrrOSrkD_MAei0nnCKjUjkMggbowUN_Gpg1wXGuXf7KLaz6GCuvf0TLA_nPTGQ/exec';
+
+  // ✏️ מספר הוואטסאפ של הקליניקה, לצורך כפתור "שליחת אישור" (בפורמט בינלאומי, בלי + ובלי 0 מוביל)
+  const CLINIC_WHATSAPP_NUMBER = '972559487515';
+
+  const treatmentSelect = document.getElementById('apt-treatment');
+  const stepDate = document.getElementById('step-date');
+  const stepSlots = document.getElementById('step-slots');
+  const slotsContainer = document.getElementById('slots-container');
+  const slotsLoading = document.getElementById('slots-loading');
+  const slotsEmpty = document.getElementById('slots-empty');
+  const stepForm = document.getElementById('step-form');
+  const bookingSummary = document.getElementById('booking-summary');
+  const nameInput = document.getElementById('apt-name');
+  const phoneInput = document.getElementById('apt-phone');
+  const emailInput = document.getElementById('apt-email');
+  const submitBtn = document.getElementById('apt-submit');
+  const submitText = document.getElementById('apt-submit-text');
+  const spinner = document.getElementById('apt-spinner');
+  const stepSuccess = document.getElementById('step-success');
+  const successWhatsappBtn = document.getElementById('success-whatsapp-btn');
+  const errorBox = document.getElementById('booking-error');
+  const errorText = document.getElementById('booking-error-text');
+
+  let selectedTreatment = null;
+  let selectedDate = null;
+  let selectedTime = null;
+
+  // ✏️ גבולות לוח השנה - מהיום ועד 3 חודשים קדימה (כולל)
+  const todayForCal = new Date();
+  const clientCalMinYear = todayForCal.getFullYear();
+  const clientCalMinMonth = todayForCal.getMonth() + 1;
+  const maxDateForCal = new Date(todayForCal.getFullYear(), todayForCal.getMonth() + 2, 1);
+  const clientCalMaxYear = maxDateForCal.getFullYear();
+  const clientCalMaxMonth = maxDateForCal.getMonth() + 1;
+
+  let clientCalYear = clientCalMinYear;
+  let clientCalMonth = clientCalMinMonth;
+  let clientCalAvailability = {};
+
+  // ✏️ קאש בצד הדפדפן: שומר תוצאות זמינות שכבר הבאנו, כדי לא לבקש שוב מהשרת
+  const availabilityCache = {};
+  function availCacheKey(year, month, treatment){ return `${year}-${month}-${treatment}`; }
+
+  // טוענת את רשימת הטיפולים מהשרת ומציגה אותה בתפריט הנפתח
+  async function loadTreatments(){
+    try{
+      const res = await fetch(`${APPS_SCRIPT_URL}?action=getTreatments`);
+      const data = await res.json();
+
+      treatmentSelect.innerHTML = '<option value="">בחרי טיפול...</option>';
+
+      if(!data.success || !data.treatments || data.treatments.length === 0){
+        treatmentSelect.innerHTML = '<option value="">אין טיפולים זמינים כרגע</option>';
+        return;
+      }
+
+      data.treatments.forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t.name;
+        opt.textContent = `${t.name} (${t.duration} דק')`;
+        treatmentSelect.appendChild(opt);
+      });
+
+      // ✏️ מריצים ברקע, מבלי לחכות (לא await) - טוענים מראש את זמינות החודש הנוכחי
+      // לכל טיפול, כדי שברגע שהלקוחה בוחרת טיפול, הלוח כבר יהיה מוכן ומיידי
+      prefetchAllTreatmentsAvailability(data.treatments);
+
+    }catch(err){
+      treatmentSelect.innerHTML = '<option value="">שגיאה בטעינת הטיפולים</option>';
+    }
+  }
+  loadTreatments();
+  loadPriceList(); // ✏️ טוענים ברקע כבר עם טעינת הדף, כדי שפתיחת חלונית המחירון תהיה מיידית
+
+  // טוענת ברקע, לכל טיפול בנפרד, את זמינות החודש הנוכחי - ושומרת בקאש המקומי
+  async function prefetchAllTreatmentsAvailability(treatments){
+    treatments.forEach(async (t) => {
+      const key = availCacheKey(clientCalMinYear, clientCalMinMonth, t.name);
+      if(availabilityCache[key]) return; // כבר בקאש
+      try{
+        const url = `${APPS_SCRIPT_URL}?action=getMonthAvailability&year=${clientCalMinYear}&month=${clientCalMinMonth}&treatment=${encodeURIComponent(t.name)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        if(data.success){
+          availabilityCache[key] = data.days || {};
+          // אם הלקוחה כבר במקרה בחרה בדיוק את הטיפול הזה בינתיים - נעדכן את התצוגה מיד
+          if(selectedTreatment === t.name && clientCalYear === clientCalMinYear && clientCalMonth === clientCalMinMonth){
+            clientCalAvailability = availabilityCache[key];
+            renderClientCalendar();
+            document.getElementById('client-cal-loading').hidden = true;
+          }
+        }
+      }catch(err){ /* שגיאת טעינה מוקדמת - לא קריטית, פשוט תיטען שוב כרגיל בלחיצה */ }
+    });
+  }
+
+  treatmentSelect.addEventListener('change', () => {
+    hideError();
+    stepSlots.hidden = true;
+    stepForm.hidden = true;
+    stepSuccess.hidden = true;
+    selectedTime = null;
+    selectedDate = null;
+
+    if(!treatmentSelect.value){
+      selectedTreatment = null;
+      stepDate.hidden = true;
+      return;
+    }
+    selectedTreatment = treatmentSelect.value;
+    stepDate.hidden = false;
+
+    // כל טיפול חדש = מתחילים את לוח השנה מהחודש הנוכחי מחדש, כי הזמינות תלויה במשך הטיפול
+    clientCalYear = clientCalMinYear;
+    clientCalMonth = clientCalMinMonth;
+    loadClientCalendarMonth();
+  });
+
+  function changeClientCalMonth(delta){
+    let y = clientCalYear, m = clientCalMonth + delta;
+    if(m < 1){ m = 12; y--; }
+    if(m > 12){ m = 1; y++; }
+    // לא מרשים לצאת מהטווח המותר (היום עד 3 חודשים קדימה)
+    if(y < clientCalMinYear || (y === clientCalMinYear && m < clientCalMinMonth)) return;
+    if(y > clientCalMaxYear || (y === clientCalMaxYear && m > clientCalMaxMonth)) return;
+    clientCalYear = y;
+    clientCalMonth = m;
+    loadClientCalendarMonth();
+  }
+
+  // טוענת מהשרת אילו ימים בחודש המוצג יש בהם זמינות עבור הטיפול הנבחר
+  async function loadClientCalendarMonth(){
+    const loadingEl = document.getElementById('client-cal-loading');
+    const gridEl = document.getElementById('client-cal-grid');
+
+    // ✏️ אם כבר יש בקאש המקומי (בזכות הטעינה המוקדמת ברקע) - מציגים מיידית, בלי לבקש מהשרת
+    const key = availCacheKey(clientCalYear, clientCalMonth, selectedTreatment);
+    if(availabilityCache[key]){
+      loadingEl.hidden = true;
+      clientCalAvailability = availabilityCache[key];
+      renderClientCalendar();
+      return;
+    }
+
+    loadingEl.hidden = false;
+    gridEl.innerHTML = '';
+
+    try{
+      const url = `${APPS_SCRIPT_URL}?action=getMonthAvailability&year=${clientCalYear}&month=${clientCalMonth}&treatment=${encodeURIComponent(selectedTreatment)}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      loadingEl.hidden = true;
+
+      if(!data.success){
+        showError(data.error || 'אירעה שגיאה בטעינת הזמינות');
+        return;
+      }
+
+      clientCalAvailability = data.days || {};
+      availabilityCache[key] = clientCalAvailability;
+      renderClientCalendar();
+
+    }catch(err){
+      loadingEl.hidden = true;
+      showError('אירעה שגיאה, אנא נסי שוב');
+    }
+  }
+
+  function renderClientCalendar(){
+    const label = document.getElementById('client-cal-month-label');
+    label.textContent = new Date(clientCalYear, clientCalMonth - 1, 1).toLocaleDateString('he-IL', { month:'long', year:'numeric' });
+
+    document.getElementById('client-cal-prev').disabled =
+      (clientCalYear === clientCalMinYear && clientCalMonth === clientCalMinMonth);
+    document.getElementById('client-cal-next').disabled =
+      (clientCalYear === clientCalMaxYear && clientCalMonth === clientCalMaxMonth);
+
+    const grid = document.getElementById('client-cal-grid');
+    grid.innerHTML = '';
+
+    const firstWeekday = new Date(clientCalYear, clientCalMonth - 1, 1).getDay();
+    const daysInMonth = new Date(clientCalYear, clientCalMonth, 0).getDate();
+    const pad2 = n => (n < 10 ? '0' : '') + n;
+
+    for(let i = 0; i < firstWeekday; i++){
+      const empty = document.createElement('div');
+      empty.className = 'client-cal-cell empty';
+      grid.appendChild(empty);
+    }
+
+    for(let day = 1; day <= daysInMonth; day++){
+      const dateKey = `${clientCalYear}-${pad2(clientCalMonth)}-${pad2(day)}`;
+      const isAvailable = !!clientCalAvailability[dateKey];
+
+      const cell = document.createElement('div');
+      cell.className = 'client-cal-cell ' + (isAvailable ? 'available' : 'unavailable');
+      if(dateKey === selectedDate) cell.classList.add('selected');
+      cell.textContent = day;
+
+      if(isAvailable){
+        cell.onclick = () => selectClientDate(dateKey, cell);
+      }
+
+      grid.appendChild(cell);
+    }
+  }
+
+  function selectClientDate(dateKey, cellEl){
+    selectedDate = dateKey;
+    document.querySelectorAll('.client-cal-cell').forEach(c => c.classList.remove('selected'));
+    cellEl.classList.add('selected');
+
+    hideError();
+    stepForm.hidden = true;
+    stepSuccess.hidden = true;
+    selectedTime = null;
+
+    loadSlots(selectedDate, selectedTreatment);
+  }
+
+  // טוענת שעות פנויות מה-Apps Script עבור תאריך + טיפול נבחרים
+  async function loadSlots(dateStr, treatmentName){
+    stepSlots.hidden = false;
+    slotsContainer.innerHTML = '';
+    slotsEmpty.hidden = true;
+    slotsLoading.hidden = false;
+
+    try{
+      const url = `${APPS_SCRIPT_URL}?action=getSlots&date=${encodeURIComponent(dateStr)}&treatment=${encodeURIComponent(treatmentName)}`;
+      const res = await fetch(url);
+      const data = await res.json();
+
+      slotsLoading.hidden = true;
+
+      if(!data.success){
+        showError(data.error || 'אירעה שגיאה בטעינת השעות הפנויות');
+        return;
+      }
+
+      if(!data.slots || data.slots.length === 0){
+        slotsEmpty.hidden = false;
+        return;
+      }
+
+      data.slots.forEach((time, i) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'slot-btn';
+        btn.textContent = time;
+        btn.style.animationDelay = (i * 0.05) + 's'; // אנימציית כניסה מדורגת רכה
+        btn.addEventListener('click', () => selectSlot(time, btn));
+        slotsContainer.appendChild(btn);
+      });
+
+    }catch(err){
+      slotsLoading.hidden = true;
+      showError('אירעה שגיאה, אנא נסי שוב');
+    }
+  }
+
+  function selectSlot(time, btnEl){
+    selectedTime = time;
+    document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
+    btnEl.classList.add('selected');
+
+    const dateObj = new Date(selectedDate);
+    const formattedDate = dateObj.toLocaleDateString('he-IL', { day:'numeric', month:'long', year:'numeric' });
+    bookingSummary.textContent = `${selectedTreatment} · ${formattedDate} בשעה ${time}`;
+
+    stepForm.hidden = false;
+    stepSuccess.hidden = true;
+    hideError();
+    stepForm.scrollIntoView({ behavior:'smooth', block:'center' });
+  }
+
+  // שליחת הבקשה לקביעת התור
+  async function submitBooking(){
+    hideError();
+    const name = nameInput.value.trim();
+    const phone = phoneInput.value.trim();
+    const email = emailInput.value.trim();
+
+    if(!name || !phone){
+      showError('נא למלא שם וטלפון');
+      return;
+    }
+    if(!selectedTreatment || !selectedDate || !selectedTime){
+      showError('נא לבחור טיפול, תאריך ושעה');
+      return;
+    }
+
+    setLoading(true);
+
+    try{
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        // ✏️ text/plain במכוון - מונע בקשת CORS מקדימה (preflight) שחוסמת Google Apps Script
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          action: 'bookAppointment',
+          date: selectedDate,
+          time: selectedTime,
+          treatment: selectedTreatment,
+          name: name,
+          phone: phone,
+          email: email
+        })
+      });
+      const data = await res.json();
+
+      setLoading(false);
+
+      if(!data.success){
+        showError(data.error || 'אירעה שגיאה, אנא נסי שוב');
+        return;
+      }
+
+      // בניית כפתור וואטסאפ מוכן-מראש עם פרטי התור, לשליחת אישור מהיר מהקליניקה ללקוחה
+      const dateObj = new Date(selectedDate);
+      const formattedDate = dateObj.toLocaleDateString('he-IL', { day:'numeric', month:'long', year:'numeric' });
+      const waMessage = encodeURIComponent(
+        `היי ${name}! התור שלך ל${selectedTreatment} אושר בתאריך ${formattedDate} בשעה ${selectedTime}. מחכה לך :)`
+      );
+      successWhatsappBtn.href = `https://wa.me/${CLINIC_WHATSAPP_NUMBER}?text=${waMessage}`;
+
+      document.getElementById('success-text').textContent = email
+        ? 'התור נקבע בהצלחה! נשלח אישור למייל שלך / SMS.'
+        : 'התור נקבע בהצלחה! נשלח אישור ב-SMS.';
+
+      stepForm.hidden = true;
+      stepSuccess.hidden = false;
+      stepSuccess.scrollIntoView({ behavior:'smooth', block:'center' });
+
+    }catch(err){
+      setLoading(false);
+      showError('אירעה שגיאה בשליחה, בדקי את החיבור ונסי שוב');
+    }
+  }
+
+  function setLoading(isLoading){
+    submitBtn.disabled = isLoading;
+    spinner.hidden = !isLoading;
+    submitText.hidden = isLoading;
+  }
+
+  function showError(msg){
+    errorText.textContent = msg;
+    errorBox.hidden = false;
+    errorBox.scrollIntoView({ behavior:'smooth', block:'center' });
+  }
+
+  function hideError(){
+    errorBox.hidden = true;
+  }
+
+  // ========================================================
+  // רישום ה-Service Worker - זה מה שהופך את האתר לניתן להתקנה
+  // ========================================================
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('service-worker.js')
+        .catch(err => console.warn('Service worker registration failed:', err));
+    });
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>אין חיבור לאינטרנט | Miriam Omisi</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Assistant:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gold: #B8934F;
+    --gold-deep: #4E3A10;
+    --cream: #F3E9D2;
+    --text-dark: #4A3A18;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{
+    background-color: var(--cream);
+    color: var(--text-dark);
+    font-family: 'Assistant', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px;
+  }
+  .box{ max-width: 380px; }
+  h1{
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 26px;
+    color: var(--gold-deep);
+    margin-bottom: 14px;
+  }
+  p{
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+  button{
+    background: var(--gold);
+    color: #fff;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 12px;
+    font-family: 'Assistant', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+  <div class="box">
+    <h1>אין כרגע חיבור לאינטרנט</h1>
+    <p>נראה שאת/ה לא מחובר/ת לרשת כרגע. קביעת תורים ומחירון דורשים חיבור אינטרנט. ברגע שהחיבור יחזור, אפשר לנסות שוב.</p>
+    <button onclick="location.reload()">נסה שוב</button>
+  </div>
+</body>
+</html>

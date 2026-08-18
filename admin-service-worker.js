@@ -1,5 +1,5 @@
 // גרסת הקאש של פאנל הניהול - כל פעם שמעדכנים קבצים, כדאי לשנות את המספר הזה
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2';
 const CACHE_NAME = `miriam-omisi-admin-${CACHE_VERSION}`;
 
 // קבצי "השלד" של פאנל הניהול - נשמרים בקאש מיד בהתקנה כדי שהדף ייפתח מהר וגם אופליין
@@ -7,17 +7,17 @@ const APP_SHELL = [
   './admin.html',
   './admin-manifest.json',
   './offline.html',
-  './icons/icon-72.png',
-  './icons/icon-96.png',
-  './icons/icon-128.png',
-  './icons/icon-144.png',
-  './icons/icon-152.png',
-  './icons/icon-192.png',
-  './icons/icon-384.png',
-  './icons/icon-512.png',
-  './icons/icon-maskable-192.png',
-  './icons/icon-maskable-512.png',
-  './icons/apple-touch-icon.png'
+  './icons/admin-icon-72.png',
+  './icons/admin-icon-96.png',
+  './icons/admin-icon-128.png',
+  './icons/admin-icon-144.png',
+  './icons/admin-icon-152.png',
+  './icons/admin-icon-192.png',
+  './icons/admin-icon-384.png',
+  './icons/admin-icon-512.png',
+  './icons/admin-icon-maskable-192.png',
+  './icons/admin-icon-maskable-512.png',
+  './icons/admin-apple-touch-icon.png'
 ];
 
 // התקנה - שומרים את קבצי השלד בקאש

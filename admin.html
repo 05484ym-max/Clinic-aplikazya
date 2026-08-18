@@ -256,6 +256,27 @@
   }
   #app-screen{ display:none; }
 
+  /* ✏️ לוגו ותת-כותרת במסך הכניסה - באותו סגנון גופנים בדיוק כמו מסך הכניסה של היומן */
+  .login-logo{
+    font-family:'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 34px;
+    line-height: 1.1;
+    background: linear-gradient(135deg, var(--gold-deep), var(--gold) 45%, var(--gold-light) 60%, var(--gold) 80%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 6px;
+  }
+  .login-subtitle{
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-dark-soft);
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+  }
+
   /* =========================================================
      לוח שנה (Calendar grid) - כמו יומן גוגל, בסגנון האתר
   ========================================================= */
@@ -445,10 +466,10 @@
 </head>
 <body>
 
-<h1 class="gold-metal">ניהול קליניקה</h1>
-
-<!-- מסך כניסה בסיסמה -->
+<!-- מסך כניסה בסיסמה - אותו לוגו וסגנון גופנים כמו מסך הכניסה של היומן -->
 <div id="login-screen" class="card">
+  <div class="login-logo">Miriam<br>Omesi</div>
+  <div class="login-subtitle">כניסה לניהול הקליניקה</div>
   <div class="field-label">סיסמת ניהול</div>
   <input type="password" id="password-input" placeholder="הזיני סיסמה">
   <button class="btn" onclick="login()">כניסה</button>
@@ -457,6 +478,7 @@
 
 <!-- מסך הניהול עצמו, מוצג רק אחרי כניסה מוצלחת -->
 <div id="app-screen">
+  <h1 class="gold-metal">ניהול קליניקה</h1>
 
   <!-- לוח שנה - לחיצה על יום פותחת חלונית עם פרטי התורים ועריכת השעות -->
   <div class="card">

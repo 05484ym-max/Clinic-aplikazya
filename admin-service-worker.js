@@ -1,5 +1,5 @@
 // גרסת הקאש של פאנל הניהול - כל פעם שמעדכנים קבצים, כדאי לשנות את המספר הזה
-const CACHE_VERSION = 'v3';
+const CACHE_VERSION = 'v4';
 const CACHE_NAME = `miriam-omisi-admin-${CACHE_VERSION}`;
 
 // קבצי "השלד" של פאנל הניהול - נשמרים בקאש מיד בהתקנה כדי שהדף ייפתח מהר וגם אופליין

@@ -3,7 +3,7 @@
   "short_name": "ניהול Miriam Omisi",
   "description": "פאנל ניהול תורים, טיפולים ומחירון - קליניקת קוסמטיקה יוקרתית",
   "start_url": "./admin.html",
-  "scope": "./",
+  "scope": "./admin.html",
   "id": "./admin.html",
   "display": "standalone",
   "orientation": "portrait-primary",

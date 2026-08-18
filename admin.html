@@ -1026,11 +1026,11 @@
   }
 </script>
 
-<!-- רישום Service Worker - נדרש כדי שהדפדפן יאפשר "התקנה" של פאנל הניהול כאפליקציה נפרדת -->
+<!-- רישום Service Worker - נדרש כדי שהדפדפן יאפשר "התקנה" של פאנל הניהול כאפליקציה נפרדת. מגדירים מפורש scope שמצומצם רק לדף הזה, כדי שהדפדפן לא יחשוב שזו אותה אפליקציה כמו זו של הלקוחות ב-index.html -->
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('admin-service-worker.js').catch(() => {});
+      navigator.serviceWorker.register('admin-service-worker.js', { scope: './admin.html' }).catch(() => {});
     });
   }
 </script>

@@ -7,6 +7,7 @@
 <title>ניהול קליניקה | Miriam Omesi</title>
 
 <!-- הגדרות PWA - כדי שגם דף הניהול יהיה נוח להתקנה בטלפון של בעלת הקליניקה -->
+<link rel="manifest" href="admin-manifest.json">
 <meta name="theme-color" content="#B8934F">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1022,6 +1023,15 @@
     const el = document.getElementById('pricelist-status');
     el.textContent = msg;
     el.className = 'status-msg ' + (isError ? 'err' : 'ok');
+  }
+</script>
+
+<!-- רישום Service Worker - נדרש כדי שהדפדפן יאפשר "התקנה" של פאנל הניהול כאפליקציה נפרדת -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('admin-service-worker.js').catch(() => {});
+    });
   }
 </script>
 

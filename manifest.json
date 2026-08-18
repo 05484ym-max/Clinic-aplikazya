@@ -1,9 +1,10 @@
 {
   "name": "Miriam Omisi | קליניקת קוסמטיקה יוקרתית",
   "short_name": "Miriam Omisi",
-  "description": "קביעת תורים, מחירון וגלריית עבודות - קליניקת קוסמטיקה יוקרתית",
+  "description": "קביעת תורים, מחירון וגליית עבודות - קליניקת קוסמטיקה יוקרתית",
   "start_url": "./index.html",
-  "scope": "./",
+  "scope": "./index.html",
+  "id": "./index.html",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#F3E9D2",

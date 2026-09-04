@@ -439,9 +439,12 @@
   const TREATMENT_PALETTE = ['#4E3A10', '#B8934F', '#8A6B2C', '#D9BD7E', '#6B5A30', '#A67C3D', '#7A5F1F', '#C9A868'];
   const HEBREW_MONTHS = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
 
-  // ✏️ שני ה-Apps Script הקיימים - אותם בדיוק כמו ב-admin.html/journal.html/index.html.
+  // ✏️ BOOKING_APPS_SCRIPT_URL: פריסה (deployment) חדשה ונפרדת של אותו Code.gs,
+  // עם adminBookAppointment מוסף. index.html/admin.html/journal.html ממשיכים
+  // להצביע על הפריסה הישנה ולעבוד בדיוק כמו קודם - לא נגעו בהם.
+  // JOURNAL_APPS_SCRIPT_URL: אותו סקריפט קיים כמו ב-journal.html, ללא שינוי.
   // הפאנל המאוחד קורא לשניהם עם אותה סיסמה משותפת (יש להגדיר אותה זהה בשני הסקריפטים).
-  const BOOKING_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxqGHEFPrrOSrkD_MAei0nnCKjUjkMggbowUN_Gpg1wXGuXf7KLaz6GCuvf0TLA_nPTGQ/exec';
+  const BOOKING_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyfjcVkve63CfGGJGaeIKtIpV2cM-_dIjJyLg_Kwsp3NVEZJB88bnPP-nc_vtUhnLAc/exec';
   const JOURNAL_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx9lgP-lvOAX6qloxrdmHE4L9Odxsdu-vO8DhYQ6vvEzpvXv4f0imr0ZjtOfgepdjGa/exec';
 
   if (typeof ChartDataLabels !== 'undefined') Chart.register(ChartDataLabels);

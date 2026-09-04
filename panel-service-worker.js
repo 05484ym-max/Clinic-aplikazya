@@ -1,0 +1,87 @@
+// גרסת הקאש של הפאנל המאוחד - כל פעם שמעדכנים קבצים, כדאי לשנות את המספר הזה
+const CACHE_VERSION = 'v1';
+const CACHE_NAME = `miriam-omisi-panel-${CACHE_VERSION}`;
+
+// קבצי "השלד" של הפאנל - נשמרים בקאש מיד בהתקנה כדי שהדף ייפתח מהר וגם אופליין
+const APP_SHELL = [
+  './panel.html',
+  './panel-manifest.json',
+  './offline.html',
+  './icons/admin-icon-72.png',
+  './icons/admin-icon-96.png',
+  './icons/admin-icon-128.png',
+  './icons/admin-icon-144.png',
+  './icons/admin-icon-152.png',
+  './icons/admin-icon-192.png',
+  './icons/admin-icon-384.png',
+  './icons/admin-icon-512.png',
+  './icons/admin-icon-maskable-192.png',
+  './icons/admin-icon-maskable-512.png',
+  './icons/admin-apple-touch-icon.png'
+];
+
+// התקנה - שומרים את קבצי השלד בקאש
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => cache.addAll(APP_SHELL))
+      .then(() => self.skipWaiting())
+  );
+});
+
+// הפעלה - מנקים קאש ישן מגרסאות קודמות
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys
+          .filter((key) => key !== CACHE_NAME)
+          .map((key) => caches.delete(key))
+      )
+    ).then(() => self.clients.claim())
+  );
+});
+
+// יירוט בקשות רשת
+self.addEventListener('fetch', (event) => {
+  const req = event.request;
+
+  if (req.method !== 'GET') return;
+
+  const url = new URL(req.url);
+
+  // בקשות ל-Google Apps Script (תורים, יומן, טיפולים, מחירון) - תמיד מהרשת,
+  // כי זה מידע חי שחייב להיות מעודכן. אם אין רשת - נכשל בבירור, לא מציגים מידע ישן/שגוי.
+  if (url.hostname.includes('script.google.com')) {
+    event.respondWith(fetch(req));
+    return;
+  }
+
+  // ניווט לדף (פתיחת הפאנל) - מנסים רשת קודם, ואם אין - קאש, ואם אין - דף אופליין
+  if (req.mode === 'navigate') {
+    event.respondWith(
+      fetch(req)
+        .then((res) => {
+          const resClone = res.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(req, resClone));
+          return res;
+        })
+        .catch(() =>
+          caches.match(req).then((cached) => cached || caches.match('./offline.html'))
+        )
+    );
+    return;
+  }
+
+  // שאר הקבצים הסטטיים (עיצוב, אייקונים) - קאש קודם, ורק אם חסר פונים לרשת
+  event.respondWith(
+    caches.match(req).then((cached) => {
+      if (cached) return cached;
+      return fetch(req).then((res) => {
+        const resClone = res.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(req, resClone));
+        return res;
+      }).catch(() => cached);
+    })
+  );
+});
